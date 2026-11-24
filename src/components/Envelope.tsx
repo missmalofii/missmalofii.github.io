@@ -48,6 +48,7 @@ export function Envelope({ open, leaving, onOpen, preview }: Props) {
         <button
           type="button"
           onClick={onOpen}
+          data-track="click-envelope-open"
           disabled={open}
           aria-label="открыть конверт с посланием"
           className={`envelope group relative block aspect-[3/2] w-[min(84vw,360px)] rounded-[8px] focus-visible:rounded-[8px] ${open ? 'is-open' : ''}`}

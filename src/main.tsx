@@ -8,8 +8,10 @@ import '@fontsource/mrs-saint-delafield/400.css'
 import './index.css'
 import App from './App.tsx'
 import { armSfx } from './lib/sfx'
+import { initAnalytics } from './lib/analytics'
 
 armSfx()
+initAnalytics()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

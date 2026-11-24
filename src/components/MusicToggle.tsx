@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { track } from '../lib/analytics'
 import { siteConfig } from '../config/site'
 import { SOUND_MUTED_KEY as MUTED_KEY } from '../lib/sfx'
 // события, которые браузеры считают «действием пользователя» и после которых разрешают звук
@@ -97,9 +98,11 @@ export function MusicToggle() {
       writeMuted(false)
       audio.volume = siteConfig.musicVolume
       audio.play().catch(() => setFailed(true))
+      track('music-on')
     } else {
       audio.pause()
       writeMuted(true)
+      track('music-off')
     }
   }
 

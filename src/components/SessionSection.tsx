@@ -7,7 +7,7 @@ export function SessionSection() {
   const hasLink = Boolean(siteConfig.bookingUrl)
 
   return (
-    <section aria-labelledby="session-title" className="relative px-5 py-20 sm:py-28">
+    <section data-track-view="session" aria-labelledby="session-title" className="relative px-5 py-20 sm:py-28">
       <Reveal className="relative mx-auto max-w-2xl overflow-hidden rounded-[28px] bg-burgundy px-6 py-14 text-center text-ivory sm:px-14 sm:py-20">
         <span aria-hidden="true" className="pointer-events-none absolute inset-3 rounded-[20px] border border-gold/40" />
         <span
@@ -35,6 +35,7 @@ export function SessionSection() {
         {hasLink && (
           <a
             href={siteConfig.bookingUrl}
+            data-track="click-booking"
             target="_blank"
             rel="noopener noreferrer"
             className="btn relative mt-10 bg-ivory text-burgundy shadow-[0_12px_30px_-14px_rgb(0_0_0/0.5)] active:scale-[0.98] [@media(hover:hover)]:hover:-translate-y-px [@media(hover:hover)]:hover:bg-white"

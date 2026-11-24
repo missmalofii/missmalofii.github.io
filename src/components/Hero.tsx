@@ -6,7 +6,7 @@ import { StarField } from './StarField'
 /** Первый экран в стиле «Тёплый акцент»: винный фон, гирлянда, снег */
 export function Hero({ onOpen }: { onOpen: () => void }) {
   return (
-    <header className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-burgundy px-6 pb-20 pt-24 text-ivory">
+    <header data-track-view="hero" className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-burgundy px-6 pb-20 pt-24 text-ivory">
       {/* тёплое золотое свечение сверху */}
       <div
         aria-hidden="true"
@@ -52,6 +52,7 @@ export function Hero({ onOpen }: { onOpen: () => void }) {
           <button
             type="button"
             onClick={onOpen}
+            data-track="click-hero-open-message"
             className="btn bg-ivory text-burgundy shadow-[0_12px_30px_-14px_rgb(0_0_0/0.5)] active:scale-[0.98] [@media(hover:hover)]:hover:-translate-y-px [@media(hover:hover)]:hover:bg-white"
           >
             <Mail size={17} strokeWidth={1.6} aria-hidden="true" />

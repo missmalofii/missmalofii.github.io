@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { track } from '../lib/analytics'
 import { ChevronDown, Download, Share2, Sparkles } from 'lucide-react'
 import { messages } from '../config/messages'
 import { siteConfig } from '../config/site'
@@ -61,7 +62,10 @@ export function MessageSection({ openRequest }: { openRequest: number }) {
 
   // показанное послание запоминаем, чтобы больше его не показывать
   useEffect(() => {
-    if (phase === 'open' && message) markSeen(message.id)
+    if (phase === 'open' && message) {
+      markSeen(message.id)
+      track(`message-shown-${message.id}`, message.text)
+    }
   }, [phase, message, markSeen])
 
   // заранее готовим картинку, чтобы меню «поделиться» открывалось мгновенно
@@ -89,15 +93,18 @@ export function MessageSection({ openRequest }: { openRequest: number }) {
       const blob = await getBlob()
       setSaveState('idle') // картинка готова — дальше системное меню или скачивание
       const result = await saveOrShareCard(blob)
+      track(`card-${result}`)
       if (result !== 'cancelled') setSaveState('done')
     } catch {
       setSaveState('error')
+      track('card-error')
     }
   }
 
   return (
     <section
       id="message"
+      data-track-view="message"
       aria-label="твоё послание"
       className="relative isolate scroll-mt-4 overflow-hidden px-5 py-20 sm:py-28"
     >
@@ -131,11 +138,11 @@ export function MessageSection({ openRequest }: { openRequest: number }) {
             </p>
 
             <div className="text-in mt-6 flex w-full flex-col items-center justify-center gap-3 sm:flex-row" style={{ animationDelay: '0.7s' }}>
-              <button type="button" onClick={save} disabled={saveState === 'busy'} className="btn btn-primary w-full max-w-xs sm:w-auto">
+              <button type="button" onClick={save} data-track="click-save-card" disabled={saveState === 'busy'} className="btn btn-primary w-full max-w-xs sm:w-auto">
                 {shareable ? <Share2 size={17} strokeWidth={1.6} aria-hidden="true" /> : <Download size={17} strokeWidth={1.6} aria-hidden="true" />}
                 {saveState === 'busy' ? 'готовлю карточку…' : shareable ? 'сохранить или поделиться' : 'сохранить карточку'}
               </button>
-              <button type="button" onClick={another} disabled={fading} className="btn btn-ghost w-full max-w-xs sm:w-auto">
+              <button type="button" onClick={another} data-track="click-another-message" disabled={fading} className="btn btn-ghost w-full max-w-xs sm:w-auto">
                 <Sparkles size={17} strokeWidth={1.6} aria-hidden="true" />
                 получить ещё одно послание
               </button>
@@ -151,6 +158,7 @@ export function MessageSection({ openRequest }: { openRequest: number }) {
                 поделись посланием в stories и отметь{' '}
                 <a
                   href={siteConfig.instagramUrl}
+                  data-track="click-instagram-mention"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-medium text-burgundy underline decoration-burgundy/30 underline-offset-4 [@media(hover:hover)]:hover:decoration-burgundy"
@@ -164,6 +172,7 @@ export function MessageSection({ openRequest }: { openRequest: number }) {
             {/* ненавязчивая подсказка, что ниже есть продолжение */}
             <button
               type="button"
+              data-track="click-scroll-to-guide"
               onClick={() => document.getElementById('guide')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
               className="text-in group mt-8 flex min-h-11 flex-col items-center gap-1 px-4 text-cocoa-soft transition-colors hover:text-burgundy"
               style={{ animationDelay: '1.2s' }}

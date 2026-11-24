@@ -8,7 +8,7 @@ export function GuideSection() {
   if (!siteConfig.guideUrl) return null
 
   return (
-    <section id="guide" aria-labelledby="guide-title" className="relative scroll-mt-6 px-5 py-20 sm:py-28">
+    <section id="guide" data-track-view="guide" aria-labelledby="guide-title" className="relative scroll-mt-6 px-5 py-20 sm:py-28">
       <div className="mx-auto grid max-w-5xl items-center gap-14 md:grid-cols-[1fr_1.1fr] md:gap-20">
         <Reveal className="md:order-2">
           <GuideCover />
@@ -27,6 +27,7 @@ export function GuideSection() {
           <a
             href={siteConfig.guideUrl}
             download={siteConfig.guideFileName}
+            data-track="click-guide-download"
             target="_blank"
             rel="noopener"
             className="btn btn-primary mt-9"

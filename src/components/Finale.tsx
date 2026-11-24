@@ -27,7 +27,7 @@ export function Finale() {
   const sorted = [...links].sort((a, b) => Number(b.icon === 'telegram') - Number(a.icon === 'telegram'))
 
   return (
-    <footer className="relative isolate flex min-h-[100svh] flex-col items-center overflow-hidden bg-burgundy px-6 pb-24 pt-24 text-center text-ivory">
+    <footer data-track-view="finale" className="relative isolate flex min-h-[100svh] flex-col items-center overflow-hidden bg-burgundy px-6 pb-24 pt-24 text-center text-ivory">
       <div
         aria-hidden="true"
         className="absolute inset-0 -z-10"
@@ -59,6 +59,7 @@ export function Finale() {
                 <li key={c.url}>
                   <a
                     href={c.url}
+                    data-track={`click-contact-${(c.icon ?? c.label).toLowerCase()}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={
@@ -84,6 +85,7 @@ export function Finale() {
             дизайн и разработка —{' '}
             <a
               href={siteConfig.developerCredit.url}
+              data-track="click-developer-credit"
               target="_blank"
               rel="noopener"
               className="inline-flex min-h-11 items-center underline decoration-ivory/30 underline-offset-4 transition-colors hover:text-ivory"
