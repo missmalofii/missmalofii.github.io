@@ -9,12 +9,28 @@ import './index.css'
 import App from './App.tsx'
 import { armSfx } from './lib/sfx'
 import { initAnalytics } from './lib/analytics'
+import { LoginGate, GATE_ENABLED } from './components/LoginGate'
 
 armSfx()
-initAnalytics()
+
+let analyticsStarted = false
+const startAnalytics = () => {
+  if (analyticsStarted) return
+  analyticsStarted = true
+  initAnalytics()
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <LoginGate onUnlock={startAnalytics}>
+      <App />
+    </LoginGate>
   </StrictMode>,
 )
+
+// уже вошли раньше (или вход выключен) — статистика стартует сразу
+try {
+  if (!GATE_ENABLED || localStorage.getItem('mm-gate')) startAnalytics()
+} catch {
+  /* нет доступа к localStorage */
+}
